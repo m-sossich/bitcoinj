@@ -660,7 +660,6 @@ public class KeyChainGroup implements KeyBag {
         EnumMap<KeyChain.KeyPurpose, DeterministicKey> currentKeys = null;
         if (!chains.isEmpty())
             currentKeys = createCurrentKeysMap(chains);
-        extractFollowingKeychains(chains);
         return new KeyChainGroup(params, basicKeyChain, chains, currentKeys, null);
     }
 
@@ -675,7 +674,6 @@ public class KeyChainGroup implements KeyBag {
         EnumMap<KeyChain.KeyPurpose, DeterministicKey> currentKeys = null;
         if (!chains.isEmpty())
             currentKeys = createCurrentKeysMap(chains);
-        extractFollowingKeychains(chains);
         return new KeyChainGroup(params, basicKeyChain, chains, currentKeys, crypter);
     }
 
