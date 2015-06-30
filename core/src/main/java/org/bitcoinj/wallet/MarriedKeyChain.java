@@ -150,6 +150,7 @@ public class MarriedKeyChain extends DeterministicKeyChain {
         return true;
     }
     
+    @Override
     public void maybeMarkKeyAsUsed(ECKey key) {
         lock.lock();
         try {
@@ -163,6 +164,22 @@ public class MarriedKeyChain extends DeterministicKeyChain {
             lock.unlock();
         }
     }
+    
+    @Override
+    public DeterministicKey findKeyFromPubKey(byte[] pubkey) {
+        lock.lock();
+        try {
+            DeterministicKey dk = super.findKeyFromPubKey(pubkey);
+            if (dk!=null) return dk;
+            for (DeterministicKeyChain keyChain : followingKeyChains) {
+                dk = keyChain.findKeyFromPubKey(pubkey);
+                if (dk!=null) return dk;
+            }
+            return null;
+        } finally {
+            lock.unlock();
+        }        
+    }    
     
 
     /** Create a new married key and return the matching output script */
